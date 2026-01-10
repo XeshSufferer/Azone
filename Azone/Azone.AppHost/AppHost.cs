@@ -9,7 +9,7 @@ var cache = builder.AddRedis("redis")
     .WithDeveloperCertificateTrust(false)
     .WithOtlpExporter();
 var db = builder.AddPostgres("postgres")
-    .AddDatabase("main");
+    .AddDatabase("auth-db");
 
 var auth = builder.AddProject<Projects.Azone_Auth>("auth")
     .WithOtlpExporter()

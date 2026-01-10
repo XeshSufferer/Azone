@@ -3,6 +3,7 @@ using Azone.Auth.Services;
 using Azone.Auth.Services.Sub_Services;
 using Azone.Auth.Services.Sub_Services.Contracts;
 using Azone.Auth.Helpers;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,11 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.AddNpgsqlDbContext<AuthDbContext>("auth-db");
 
 var app = builder.Build();
+
+await using var scope = app.Services.CreateAsyncScope();
+
+var db = scope.ServiceProvider.GetRequiredService<AuthDbContext>();
+await db.Database.MigrateAsync();
 
 app.MapDefaultEndpoints();
 

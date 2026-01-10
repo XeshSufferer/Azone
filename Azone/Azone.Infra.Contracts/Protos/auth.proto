@@ -8,13 +8,35 @@ package auth;
 service Auth {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountReply);
   rpc Login(LoginRequest) returns (LoginReply);
-  rpc Logout(LogoutRequest) returns (LogoutReply);
+  rpc Logout(LogoutRequest) returns (IsSuccess);
   rpc Refresh(RefreshToken) returns (TokenPair);
+  rpc ChangePassword(ChangePasswordRequest) returns (IsSuccess);
+  rpc GetUserData(UserIdRequest) returns (UserData);
+  rpc UserExist(UserIdRequest) returns (IsSuccess);
 }
 
 message CreateAccountRequest {
   string password = 1;
   string login = 2;
+}
+
+message ChangePasswordRequest {
+  string login = 1;
+  string password = 2;
+  string new_password = 3;
+}
+
+message UserData {
+  int32 id = 1;
+  
+}
+
+message UserIdRequest {
+  int32 user_id = 1;
+}
+
+message IsSuccess {
+  bool Success = 1;
 }
 
 message RefreshToken {
@@ -34,16 +56,12 @@ message LoginReply {
   TokenPair tokens = 1;
 }
 
-message LogoutReply {
-  bool isSuccess = 1;
-}
-
 message LogoutRequest {
-  string refreshToken = 1;
+  string refresh_token = 1;
 }
 
 
 message TokenPair {
-  string refreshToken = 1;
-  string accessToken = 2;
+  string refresh_token = 1;
+  string access_token = 2;
 }

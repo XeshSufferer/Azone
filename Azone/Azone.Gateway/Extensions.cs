@@ -31,7 +31,6 @@ public static class Extensions
         return app;
     }
 
-    // Для RouteGroupBuilder
     public static RouteGroupBuilder MapGrpcPost<TClient, TRequest, TResponse>(
         this RouteGroupBuilder app,
         string path,
@@ -40,6 +39,56 @@ public static class Extensions
         where TClient : class
     {
         app.MapPost(path, async (TRequest request, HttpContext ctx) =>
+        {
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+        return app;
+    }
+    
+    public static WebApplication MapGrpcGet<TClient, TRequest, TResponse>(
+        this WebApplication app,
+        string path,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        app.MapGet(path, async (TRequest request, HttpContext ctx) =>
+        {
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+        return app;
+    }
+
+    public static RouteGroupBuilder MapGrpcGet<TClient, TRequest, TResponse>(
+        this RouteGroupBuilder app,
+        string path,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        app.MapGet(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
             var metadata = BuildMetadata(ctx, forwardAuth);
@@ -65,7 +114,6 @@ public static class Extensions
         {
             foreach (var value in authValues)
             {
-                // gRPC требует lowercase ключей
                 metadata.Add("authorization", value);
             }
         }
