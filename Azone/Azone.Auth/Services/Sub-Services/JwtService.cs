@@ -1,11 +1,11 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Azone.Accounts.Services.Sub_Services.Contracts;
+using Azone.Auth.Services.Sub_Services.Contracts;
 using Azone.Infra.Security.DataObjects;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Azone.Accounts.Services.Sub_Services;
+namespace Azone.Auth.Services.Sub_Services;
 
 public class JwtService : IJwtService
 {

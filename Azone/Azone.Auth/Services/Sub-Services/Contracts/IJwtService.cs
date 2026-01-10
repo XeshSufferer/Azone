@@ -1,4 +1,4 @@
-﻿namespace Azone.Accounts.Services.Sub_Services.Contracts;
+﻿namespace Azone.Auth.Services.Sub_Services.Contracts;
 
 public interface IJwtService
 {

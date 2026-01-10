@@ -1,12 +1,15 @@
-using Azone.Accounts.Services.Models;
-using Azone.Accounts.Services.Sub_Services.Contracts;
+using Azone.Auth.Db;
+using Azone.Auth.Mappers;
+using Azone.Auth.Utils;
 using Azone.Auth.Helpers;
+using Azone.Auth.Models;
+using Azone.Auth.Services.Sub_Services.Contracts;
 using Azone.Contracts.Models.Generated;
 using Azone.Infra.Contracts.Enums;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace Azone.Accounts.Services;
+namespace Azone.Auth.Services;
 
 public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
     IHasher hasher, IRefreshService refreshService) : Contracts.Models.Generated.Auth.AuthBase
@@ -15,15 +18,10 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
     {
         if (await db.Users.AnyAsync(u => u.Login == request.Login))
         {
-            throw new RpcException(new Status(StatusCode.AlreadyExists, "User with this login already exists"));
+            throw new RpcException(new Status(StatusCode.AlreadyExists, AuthError.UserWithLoginAlreadyExist.Code()));
         }
         
-        var user = new User
-        {
-            Login = request.Login,
-            PasswordHash = hasher.HashBcrypt(request.Password),
-            Role = UserRole.User
-        };
+        var user = User.Create(request.Login, request.Password, hasher);
         
         await db.Users.AddAsync(user);
         await db.SaveChangesAsync();
@@ -40,10 +38,10 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
     {
         var findedUser = await db.Users.Where(u => u.Login == request.Login).FirstOrDefaultAsync();
         if (findedUser == null)
-            throw new RpcException(new Status(StatusCode.NotFound, "Login or password incorrect"));
+            throw new RpcException(new Status(StatusCode.NotFound, "Auth.LoginOrPasswordIncorrect"));
 
         if(!hasher.Verify(request.Password, findedUser.PasswordHash))
-            throw new RpcException(new Status(StatusCode.NotFound, "Login or password incorrect"));
+            throw new RpcException(new Status(StatusCode.NotFound, "Auth.LoginOrPasswordIncorrect"));
         
         var reply = new LoginReply
         {
@@ -53,14 +51,14 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
         return reply;
     }
 
-    public override async Task<LogoutReply> Logout(LogoutRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> Logout(LogoutRequest request, ServerCallContext context)
     {
         var result = await refreshService.KillRefreshToken(request.RefreshToken);
         
         if(!result.IsSuccess)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, "Refresh token invalid"));
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Auth.LoginOrPasswordIncorrect"));
 
-        return new LogoutReply { IsSuccess = result.IsSuccess };;
+        return new IsSuccess { Success = true };;
     }
 
     public override async Task<TokenPair> Refresh(RefreshToken request, ServerCallContext context)
@@ -71,5 +69,37 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
             throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
 
         return result.Value;
+    }
+
+    public override async Task<IsSuccess> ChangePassword(ChangePasswordRequest request, ServerCallContext context)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Login == request.Login);
+
+        if (user == null)
+            throw new RpcException(new Status(StatusCode.NotFound, AuthError.InvalidPasswordOrLogin.Code()));
+
+        var resut = user.ChangePassword(request.Password, request.NewPassword, hasher);
+
+        if(!resut.IsSuccess)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, resut.Error));
+
+        await db.SaveChangesAsync();
+        
+        return new IsSuccess { Success = true };
+    }
+
+    public override async Task<IsSuccess> UserExist(UserIdRequest request, ServerCallContext context)
+    {
+        return new IsSuccess{Success = await db.Users.AnyAsync(u => u.Id == request.UserId)};
+    }
+
+    public override async Task<UserData> GetUserData(UserIdRequest request, ServerCallContext context)
+    {
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        
+        if(user == null)
+            throw new RpcException(new Status(StatusCode.NotFound, AuthError.UserNotFound.Code()));
+
+        return user.ToUserData();
     }
 }

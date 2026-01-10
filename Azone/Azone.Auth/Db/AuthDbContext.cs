@@ -1,7 +1,7 @@
-using Azone.Accounts.Services.Models;
+using Azone.Auth.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Azone.Accounts.Services;
+namespace Azone.Auth.Db;
 
 public class AuthDbContext : DbContext
 {
@@ -11,6 +11,6 @@ public class AuthDbContext : DbContext
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        
+        base.OnConfiguring(optionsBuilder);
     }
 }

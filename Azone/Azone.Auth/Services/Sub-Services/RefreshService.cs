@@ -1,10 +1,11 @@
-﻿using Azone.Accounts.Services.Models;
-using Azone.Accounts.Services.Sub_Services.Contracts;
+﻿using Azone.Auth.Utils;
+using Azone.Auth.Models;
+using Azone.Auth.Services.Sub_Services.Contracts;
 using Azone.Contracts.Models.Generated;
 using Azone.Infra.Common.Models;
 using Azone.Infra.Shared.Cache;
 
-namespace Azone.Accounts.Services.Sub_Services;
+namespace Azone.Auth.Services.Sub_Services;
 
 public class RefreshService : IRefreshService
 {
@@ -77,14 +78,12 @@ public class RefreshService : IRefreshService
 
     public async Task<Result<TokenPair>> RefreshToken(string refreshToken)
     {
-        if (string.IsNullOrWhiteSpace(refreshToken))
-            return Result<TokenPair>.Failure("Refresh token is required");
 
         var refreshKey = $"refresh:{refreshToken}";
         var payload = await _cache.GetAsync<RefreshTokenPayload>(refreshKey);
     
         if (payload == null)
-            return Result<TokenPair>.Failure("Refresh token is invalid or expired");
+            return Result<TokenPair>.Failure(AuthError.RefreshTokenInvalidOrExpired.Code());
 
         await _cache.RemoveAsync(refreshKey);
         await _cache.RemoveAsync($"user:refresh:{payload.UserId}");
@@ -95,16 +94,11 @@ public class RefreshService : IRefreshService
 
     public async Task<Result> KillRefreshToken(string refreshToken)
     {
-        
-        
-        if (string.IsNullOrWhiteSpace(refreshToken))
-            return Result.Failure("Refresh token is required");
-
         var refreshKey = $"refresh:{refreshToken}";
         var payload = await _cache.GetAsync<RefreshTokenPayload>(refreshKey);
     
         if (payload == null)
-            return Result.Failure("Refresh token is invalid or expired");
+            return Result.Failure(AuthError.RefreshTokenInvalidOrExpired.Code());
         
         await _cache.RemoveAsync(refreshKey);
         await _cache.RemoveAsync($"user:refresh:{payload.UserId}");

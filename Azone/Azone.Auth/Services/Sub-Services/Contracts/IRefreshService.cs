@@ -1,8 +1,8 @@
-﻿using Azone.Accounts.Services.Models;
+﻿using Azone.Auth.Models;
 using Azone.Contracts.Models.Generated;
 using Azone.Infra.Common.Models;
 
-namespace Azone.Accounts.Services.Sub_Services.Contracts;
+namespace Azone.Auth.Services.Sub_Services.Contracts;
 
 public interface IRefreshService
 {

@@ -2,6 +2,6 @@
 
 public interface IHasher
 {
-    string HashBcrypt(string content);
+    string Hash(string content);
     bool Verify(string content, string hash);
 }
