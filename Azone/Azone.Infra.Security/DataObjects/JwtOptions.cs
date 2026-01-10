@@ -1,4 +1,4 @@
-﻿namespace Azone.Shared.Models;
+﻿namespace Azone.Infra.Security.DataObjects;
 
 public class JwtOptions
 {

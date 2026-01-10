@@ -1,10 +1,10 @@
-﻿namespace Azone.Shared.Models.Utils;
+﻿namespace Azone.Infra.Common.Models;
 
 // Result pattern, lol
 public readonly record struct Result
 {
-    public bool IsSuccess { get; init; }
-    public string? Error { get; init; }
+    public bool IsSuccess { get; }
+    public string? Error { get; }
 
     private Result(bool isSuccess, string? error)
     {
@@ -18,9 +18,9 @@ public readonly record struct Result
 
 public readonly record struct Result<T>
 {
-    public T? Value { get; init; }
-    public bool IsSuccess { get; init; }
-    public string? Error { get; init; }
+    public T? Value { get; }
+    public bool IsSuccess { get; }
+    public string? Error { get; }
 
     private Result(bool isSuccess, T? value, string? error)
     {
@@ -32,6 +32,4 @@ public readonly record struct Result<T>
     public static Result<T> Success(T value) => new(true, value, null);
     public static Result<T> Failure(string error) => new(false, default, error);
 
-    public T GetValueOrThrow() =>
-        IsSuccess ? Value! : throw new InvalidOperationException(Error);
 }

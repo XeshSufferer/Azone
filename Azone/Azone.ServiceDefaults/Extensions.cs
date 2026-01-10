@@ -1,7 +1,7 @@
 using System.Text;
-using Azone.Shared.Cache;
-using Azone.Shared.DBs;
-using Azone.Shared.Models;
+using Azone.Infra.Security.DataObjects;
+using Azone.Infra.Security.Helpers;
+using Azone.Infra.Shared.Cache;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -51,21 +51,22 @@ public static class Extensions
         
         builder.AddRedisClient("redis");
 
-        builder.AddNpgsqlDbContext<AppDbContext>("postgres");
         builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
         
         var jwtOpt = new JwtOptions()
         {
-            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-            Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
-            Key = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
-            ExpireMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES"))
+            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") ?? throw new ArgumentNullException("JWT_AUDIENCE", "JWT Audience is null"),
+            Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") ?? throw new ArgumentNullException("JWT_ISSUER", "JWT Issuer is null"),
+            Key = Environment.GetEnvironmentVariable("JWT_SECRET") ?? throw new ArgumentNullException("JWT_SECRET", "JWT Sercret is null"),
+            ExpireMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES") ?? throw new ArgumentNullException("JWT_EXPIRE_MINUTES", "JWT expire minutes is null"))
         };
         
         builder.Services.AddSingleton<JwtOptions>(p =>
         {
             return jwtOpt;
         });
+
+        builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
         
         builder.Services.AddAuthentication(options =>
             {

@@ -1,12 +1,12 @@
-﻿using Azone.Auth.Services.SubServices;
-using Azone.Shared.Cache;
-using Azone.Shared.Models;
-using Azone.Shared.Models.Utils;
-using TokenPair = Azone.Models.Generated.TokenPair;
+﻿using Azone.Accounts.Services.Models;
+using Azone.Accounts.Services.Sub_Services.Contracts;
+using Azone.Contracts.Models.Generated;
+using Azone.Infra.Common.Models;
+using Azone.Infra.Shared.Cache;
 
-namespace Azone.Auth.Services;
+namespace Azone.Accounts.Services.Sub_Services;
 
-public class RefreshService
+public class RefreshService : IRefreshService
 {
     private readonly ILogger<RefreshService> _logger;
     private readonly IRedisCacheService _cache;
@@ -21,9 +21,9 @@ public class RefreshService
 
     public async Task<TokenPair> CreateTokenPair(User user)
     {
-        var jwt = _jwtService.IssueToken(user.Id, new[] { user.UserRole.ToString() });
+        var jwt = _jwtService.IssueToken(user.Id, new[] { user.Role.ToString() });
         var refresh = Guid.NewGuid().ToString();
-        var pair = new TokenPair
+        var pair = new Azone.Contracts.Models.Generated.TokenPair()
         {
             AccessToken = jwt,
             RefreshToken = refresh
@@ -32,7 +32,7 @@ public class RefreshService
         var payload = new RefreshTokenPayload
         {
             UserId = user.Id,
-            Role = user.UserRole
+            Role = user.Role
         };
 
         var userRefreshKey = $"user:refresh:{user.Id}";
@@ -91,5 +91,23 @@ public class RefreshService
 
         var pair = await CreateTokenPair(payload);
         return Result<TokenPair>.Success(pair);
+    }
+
+    public async Task<Result> KillRefreshToken(string refreshToken)
+    {
+        
+        
+        if (string.IsNullOrWhiteSpace(refreshToken))
+            return Result.Failure("Refresh token is required");
+
+        var refreshKey = $"refresh:{refreshToken}";
+        var payload = await _cache.GetAsync<RefreshTokenPayload>(refreshKey);
+    
+        if (payload == null)
+            return Result.Failure("Refresh token is invalid or expired");
+        
+        await _cache.RemoveAsync(refreshKey);
+        await _cache.RemoveAsync($"user:refresh:{payload.UserId}");
+        return Result.Success();
     }
 }

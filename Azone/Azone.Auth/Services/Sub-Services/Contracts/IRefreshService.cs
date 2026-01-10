@@ -1,8 +1,8 @@
-﻿using Azone.Shared.Models;
-using Azone.Shared.Models.Utils;
-using TokenPair = Azone.Models.Generated.TokenPair;
+﻿using Azone.Accounts.Services.Models;
+using Azone.Contracts.Models.Generated;
+using Azone.Infra.Common.Models;
 
-namespace Azone.Auth.Services;
+namespace Azone.Accounts.Services.Sub_Services.Contracts;
 
 public interface IRefreshService
 {
@@ -11,4 +11,6 @@ public interface IRefreshService
     Task<TokenPair> CreateTokenPair(RefreshTokenPayload payload);
 
     Task<Result<TokenPair>> RefreshToken(string refreshToken);
+
+    Task<Result> KillRefreshToken(string refreshToken);
 }

@@ -1,21 +1,26 @@
 ﻿using Grpc.Core;
+using Microsoft.AspNetCore.Http;
 
 namespace Azone.Gateway;
 
 public static class Extensions
 {
+    // Для WebApplication
     public static WebApplication MapGrpcPost<TClient, TRequest, TResponse>(
         this WebApplication app,
         string path,
-        Func<TClient, TRequest, HttpContext, Task<TResponse>> handler)
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
         where TClient : class
     {
         app.MapPost(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
             try
             {
-                var response = await handler(client, request, ctx);
+                var response = await handler(client, request, metadata, ctx);
                 return Results.Ok(response);
             }
             catch (RpcException ex)
@@ -25,19 +30,23 @@ public static class Extensions
         });
         return app;
     }
-    
+
+    // Для RouteGroupBuilder
     public static RouteGroupBuilder MapGrpcPost<TClient, TRequest, TResponse>(
         this RouteGroupBuilder app,
         string path,
-        Func<TClient, TRequest, HttpContext, Task<TResponse>> handler)
-        where TClient : class 
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
     {
         app.MapPost(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
             try
             {
-                var response = await handler(client, request, ctx);
+                var response = await handler(client, request, metadata, ctx);
                 return Results.Ok(response);
             }
             catch (RpcException ex)
@@ -47,7 +56,23 @@ public static class Extensions
         });
         return app;
     }
-    
+
+    private static Metadata BuildMetadata(HttpContext context, bool forwardAuth)
+    {
+        var metadata = new Metadata();
+
+        if (forwardAuth && context.Request.Headers.TryGetValue("Authorization", out var authValues))
+        {
+            foreach (var value in authValues)
+            {
+                // gRPC требует lowercase ключей
+                metadata.Add("authorization", value);
+            }
+        }
+
+        return metadata;
+    }
+
     private static IResult HandleGrpcError(RpcException ex)
     {
         var httpStatus = ex.StatusCode switch
@@ -60,7 +85,7 @@ public static class Extensions
             StatusCode.DeadlineExceeded or StatusCode.Cancelled => 408,
             _ => 500
         };
-        
+
         return Results.StatusCode(httpStatus);
     }
 }

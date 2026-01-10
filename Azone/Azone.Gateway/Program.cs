@@ -1,35 +1,47 @@
-using Azone.Gateway;
-using Azone.Models.Generated;
+    using Azone.Contracts.Models.Generated;
+    using Azone.Gateway;
 
-var builder = WebApplication.CreateBuilder(args);
+    var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
+    builder.Services.AddOpenApi();
 
-builder.AddServiceDefaults();
+    builder.AddServiceDefaults();
+    
+    builder.Services.AddServiceDiscovery();
+    
+    builder.Services.AddGrpcClient<Auth.AuthClient>(op =>
+    {
+        op.Address = new Uri(builder.Configuration["Auth:connection"]);
+    });
+    
+    var app = builder.Build();
 
-var app = builder.Build();
+    app.MapDefaultEndpoints();
 
-app.MapDefaultEndpoints();
+    if (app.Environment.IsDevelopment())
+    {
+        app.MapOpenApi();
+    }
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+    app.UseHttpsRedirection();
 
-app.UseHttpsRedirection();
+    var api = app.MapGroup("api/");
+    var auth = api.MapGroup("auth/");
+    
+    auth.MapGet("/validate-token", () => new { IsValid = true })
+        .RequireAuthorization();
+    
+    auth.MapGrpcPost<Auth.AuthClient, CreateAccountRequest, CreateAccountReply>("/create",
+        async (client, req, md, ctx) => await client.CreateAccountAsync(req), false);
 
-app.MapGet("/say-hello", () => "Hello!");
-var api = app.MapGroup("api/");
+    auth.MapGrpcPost<Auth.AuthClient, LoginRequest, LoginReply>("/login",
+        async (client, request, md, ctx) => await client.LoginAsync(request), false);
 
-var accounts = api.MapGroup("accounts/");
+    auth.MapGrpcPost<Auth.AuthClient, LogoutRequest, LogoutReply>("/logout",
+        async (client, request, md, ctx) => await client.LogoutAsync(request), false);
 
-accounts.MapGrpcPost<Auth.AuthClient, CreateAccountRequest, CreateAccountReply>("/create",
-    async (client, req, ctx) => await client.CreateAccountAsync(req));
+    auth.MapGrpcPost<Auth.AuthClient, RefreshToken, TokenPair>("/refresh",
+        async (client, request, md, ctx) => await client.RefreshAsync(request), false);
+    
 
-accounts.MapGrpcPost<Auth.AuthClient, LoginRequest, LoginReply>("/login",
-    async (client, request, ctx) => await client.LoginAsync(request));
-
-accounts.MapGrpcPost<Auth.AuthClient, LogoutRequest, LogoutReply>("/logout",
-    async (client, request, ctx) => await client.LogoutAsync(request));
-
-app.Run();
+    app.Run();

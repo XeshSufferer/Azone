@@ -1,6 +1,6 @@
-﻿using Azone.Shared.Models.Enums;
+using Azone.Infra.Contracts.Enums;
 
-namespace Azone.Shared.Models;
+namespace Azone.Accounts.Services.Models;
 
 public class RefreshTokenPayload
 {

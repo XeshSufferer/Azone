@@ -14,6 +14,15 @@ public static class Extensions
             .WaitFor(redis);
     }
     
+    public static IResourceBuilder<ProjectResource> AddServiceConnectionString(
+        this IResourceBuilder<ProjectResource> builder,
+        string key, IResourceBuilder<ProjectResource> service)
+    {
+        return builder
+            .WithReference(service)
+            .WithEnvironment(key, $"http://{service.Resource.Name}");
+    }
+    
     public static IResourceBuilder<ProjectResource> WithDefaultSecuritySettings(
         this IResourceBuilder<ProjectResource> builder)
     {

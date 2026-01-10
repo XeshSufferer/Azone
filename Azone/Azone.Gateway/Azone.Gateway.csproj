@@ -12,6 +12,7 @@
     
     <ItemGroup>
         <ProjectReference Include="../Azone.ServiceDefaults/Azone.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Contracts/Azone.Infra.Contracts.csproj"/>
     </ItemGroup>
 
 </Project>

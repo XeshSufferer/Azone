@@ -10,8 +10,9 @@
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
-        <ProjectReference Include="../Azone.Shared/Azone.Shared.csproj"/>
         <ProjectReference Include="../Azone.ServiceDefaults/Azone.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Common/Azone.Infra.Common.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Contracts/Azone.Infra.Contracts.csproj"/>
     </ItemGroup>
 
     <ItemGroup>

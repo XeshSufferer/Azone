@@ -1,4 +1,4 @@
-﻿namespace Azone.Shared.Cache;
+﻿namespace Azone.Infra.Shared.Cache;
 
 using StackExchange.Redis;
 using System.Text.Json;

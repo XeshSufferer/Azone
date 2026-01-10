@@ -13,10 +13,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2369cb4f-c733-4a45-b3a1-affcf72bf9cb" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Common/Models/Error.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Azone.Infra.Contracts.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/ClaimsPrincipalExtension.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/IJwtHelper.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/JwtHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Azone/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Azone/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.AppHost/AppHost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.AppHost/AppHost.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.AppHost/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.AppHost/Extensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.Auth/Azone.Auth.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Azone.Auth.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.Auth/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/AuthService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Protos/auth.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Protos/auth.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IJwtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IJwtService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IRefreshService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IRefreshService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/JwtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/JwtService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/RefreshService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/RefreshService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/TokenService.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Gateway/Azone.Gateway.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Azone.Gateway.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Gateway/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Gateway/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.ServiceDefaults/Azone.ServiceDefaults.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.ServiceDefaults/Azone.ServiceDefaults.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.ServiceDefaults/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.ServiceDefaults/Extensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Azone.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Azone.Shared.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Cache/IRedisCacheService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Shared/Cache/IRedisCacheService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Cache/RedisCacheService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Shared/Cache/RedisCacheService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/DBs/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/DBs/AppDbContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/CartItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/CartItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/ProductCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Enums/ProductCategory.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/UserRole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Enums/UserRole.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Item.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Item.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/JwtOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Security/DataObjects/JwtOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Order.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/ProductReview.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/ProductReview.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/RefreshTokenPayload.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/RefreshTokenPayload.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Shop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Shop.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/ShopReview.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/ShopReview.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/TokenPair.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Utils/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Common/Models/Result.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Shared/Protos/auth.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/auth.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,6 +70,11 @@
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Azone.AppHost/Extensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Gateway/Extensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Infra.Common/Models/Error.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Infra.Contracts/Enums/UserRole.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/ClaimsPrincipalExtension.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/IJwtHelper.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/JwtHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/Order.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" root0="FORCE_HIGHLIGHTING" />
@@ -62,7 +105,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -194,7 +237,8 @@
       <workItem from="1767926190922" duration="4211000" />
       <workItem from="1767936526867" duration="2120000" />
       <workItem from="1767953283642" duration="7141000" />
-      <workItem from="1768001005914" duration="6119000" />
+      <workItem from="1768001005914" duration="16918000" />
+      <workItem from="1768036876506" duration="1497000" />
     </task>
     <servers />
   </component>
@@ -222,5 +266,13 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>

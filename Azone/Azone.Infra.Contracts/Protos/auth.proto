@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Azone.Models.Generated";
+option csharp_namespace = "Azone.Contracts.Models.Generated";
 
 package auth;
 
@@ -10,7 +10,6 @@ service Auth {
   rpc Login(LoginRequest) returns (LoginReply);
   rpc Logout(LogoutRequest) returns (LogoutReply);
   rpc Refresh(RefreshToken) returns (TokenPair);
-  rpc TokenValidate(RefreshToken) returns (TokenIsValid);
 }
 
 message CreateAccountRequest {
@@ -20,10 +19,6 @@ message CreateAccountRequest {
 
 message RefreshToken {
   string refresh = 1;
-}
-
-message TokenIsValid {
-  bool isValid = 1;
 }
 
 message CreateAccountReply {

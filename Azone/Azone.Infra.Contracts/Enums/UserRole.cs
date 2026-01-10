@@ -1,4 +1,4 @@
-﻿namespace Azone.Shared.Models.Enums;
+﻿namespace Azone.Infra.Contracts.Enums;
 
 public enum UserRole
 {

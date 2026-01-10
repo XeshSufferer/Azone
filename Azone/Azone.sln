@@ -6,9 +6,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.AppHost", "Azone.AppH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.ServiceDefaults", "Azone.ServiceDefaults\Azone.ServiceDefaults.csproj", "{FA244F5B-ED70-4E54-A497-2ACF61FFF7C4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Shared", "Azone.Shared\Azone.Shared.csproj", "{9D4E42EA-7C33-4062-B221-EB7705D85B02}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Auth", "Azone.Auth\Azone.Auth.csproj", "{61853527-BA74-4219-8C13-E3E94D996EAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Infra.Shared", "Azone.Infra.Shared\Azone.Infra.Shared.csproj", "{70E47457-7FE7-4671-BA27-5316CAB4A785}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Infra.Security", "Azone.Infra.Security\Azone.Infra.Security.csproj", "{598F0475-D52E-446C-9CD5-062AC29B101A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Infra.Common", "Azone.Infra.Common\Azone.Infra.Common.csproj", "{D6EFED28-D643-474B-A490-88359FB4CCE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Infra.Contracts", "Azone.Infra.Contracts\Azone.Infra.Contracts.csproj", "{E812403D-BD58-48C4-BA11-3B0808916E25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,13 +34,25 @@ Global
 		{FA244F5B-ED70-4E54-A497-2ACF61FFF7C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA244F5B-ED70-4E54-A497-2ACF61FFF7C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA244F5B-ED70-4E54-A497-2ACF61FFF7C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9D4E42EA-7C33-4062-B221-EB7705D85B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9D4E42EA-7C33-4062-B221-EB7705D85B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9D4E42EA-7C33-4062-B221-EB7705D85B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9D4E42EA-7C33-4062-B221-EB7705D85B02}.Release|Any CPU.Build.0 = Release|Any CPU
 		{61853527-BA74-4219-8C13-E3E94D996EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{61853527-BA74-4219-8C13-E3E94D996EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61853527-BA74-4219-8C13-E3E94D996EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61853527-BA74-4219-8C13-E3E94D996EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70E47457-7FE7-4671-BA27-5316CAB4A785}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70E47457-7FE7-4671-BA27-5316CAB4A785}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70E47457-7FE7-4671-BA27-5316CAB4A785}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70E47457-7FE7-4671-BA27-5316CAB4A785}.Release|Any CPU.Build.0 = Release|Any CPU
+		{598F0475-D52E-446C-9CD5-062AC29B101A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{598F0475-D52E-446C-9CD5-062AC29B101A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{598F0475-D52E-446C-9CD5-062AC29B101A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{598F0475-D52E-446C-9CD5-062AC29B101A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6EFED28-D643-474B-A490-88359FB4CCE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6EFED28-D643-474B-A490-88359FB4CCE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6EFED28-D643-474B-A490-88359FB4CCE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6EFED28-D643-474B-A490-88359FB4CCE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E812403D-BD58-48C4-BA11-3B0808916E25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E812403D-BD58-48C4-BA11-3B0808916E25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E812403D-BD58-48C4-BA11-3B0808916E25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E812403D-BD58-48C4-BA11-3B0808916E25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
