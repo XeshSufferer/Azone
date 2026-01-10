@@ -9,8 +9,9 @@ public class AuthDbContextFactory : IDesignTimeDbContextFactory<AuthDbContext>
     {
         var optionsBuilder = new DbContextOptionsBuilder<AuthDbContext>();
         
-        optionsBuilder.UseNpgsql("Server=(localdb)\\mssqllocaldb;Database=AzoneAuthDb;Trusted_Connection=True;");
-
+        optionsBuilder.UseNpgsql(
+            "Host=localhost;Port=5432;Database=main;Username=postgres;Password=dev"
+        );
         return new AuthDbContext(optionsBuilder.Options);
     }
 }
