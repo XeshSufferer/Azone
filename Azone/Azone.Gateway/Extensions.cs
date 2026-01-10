@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using FluentValidation;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 
 namespace Azone.Gateway;
@@ -136,4 +137,24 @@ public static class Extensions
 
         return Results.StatusCode(httpStatus);
     }
+
+    public static IRuleBuilder<T, string> IsPassword<T>(this IRuleBuilder<T, string> builder)
+    {
+        return builder
+            .NotEmpty().WithMessage("New password is required")
+            .Length(6, 64).WithMessage("Password must be between 6 and 64 characters");
+    }
+
+    public static IRuleBuilder<T, string> IsLogin<T>(this IRuleBuilder<T, string> builder)
+    {
+        return builder
+            .NotEmpty().WithMessage("Login name is required")
+            .Length(6, 64).WithMessage("Login name must be between 6 and 64 characters");
+    }
+    
+    public static IRuleBuilderOptions<T, string> IsGuid<T>(this IRuleBuilder<T, string> builder)
+    {
+        return builder
+            .Must(g => !Guid.TryParse(g, out _));
+    } 
 }

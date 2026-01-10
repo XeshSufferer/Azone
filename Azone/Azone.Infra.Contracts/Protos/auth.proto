@@ -8,7 +8,7 @@ package auth;
 service Auth {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountReply);
   rpc Login(LoginRequest) returns (LoginReply);
-  rpc Logout(LogoutRequest) returns (IsSuccess);
+  rpc Logout(RefreshToken) returns (IsSuccess);
   rpc Refresh(RefreshToken) returns (TokenPair);
   rpc ChangePassword(ChangePasswordRequest) returns (IsSuccess);
   rpc GetUserData(UserIdRequest) returns (UserData);

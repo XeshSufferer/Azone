@@ -51,9 +51,9 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
         return reply;
     }
 
-    public override async Task<IsSuccess> Logout(LogoutRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> Logout(RefreshToken request, ServerCallContext context)
     {
-        var result = await refreshService.KillRefreshToken(request.RefreshToken);
+        var result = await refreshService.KillRefreshToken(request.Refresh);
         
         if(!result.IsSuccess)
             throw new RpcException(new Status(StatusCode.InvalidArgument, "Auth.LoginOrPasswordIncorrect"));

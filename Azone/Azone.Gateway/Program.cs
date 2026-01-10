@@ -9,6 +9,8 @@ builder.AddServiceDefaults();
 
 builder.Services.AddServiceDiscovery();
 
+builder.Services.AddValidation();
+
 builder.Services.AddGrpcClient<Auth.AuthClient>(op =>
 {
     op.Address = new Uri(builder.Configuration["Auth:connection"]);
@@ -37,7 +39,7 @@ auth.MapGrpcPost<Auth.AuthClient, CreateAccountRequest, CreateAccountReply>("/cr
 auth.MapGrpcPost<Auth.AuthClient, LoginRequest, LoginReply>("/login",
     async (client, request, md, ctx) => await client.LoginAsync(request), false);
 
-auth.MapGrpcPost<Auth.AuthClient, LogoutRequest, IsSuccess>("/logout",
+auth.MapGrpcPost<Auth.AuthClient, RefreshToken, IsSuccess>("/logout",
     async (client, request, md, ctx) => await client.LogoutAsync(request), false);
 
 auth.MapGrpcPost<Auth.AuthClient, RefreshToken, TokenPair>("/refresh",
