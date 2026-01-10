@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Azone.Accounts</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
+        <ProjectReference Include="../Azone.Shared/Azone.Shared.csproj"/>
+        <ProjectReference Include="../Azone.ServiceDefaults/Azone.ServiceDefaults.csproj"/>
+    </ItemGroup>
+
+</Project>

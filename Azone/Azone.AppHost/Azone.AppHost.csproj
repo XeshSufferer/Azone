@@ -10,6 +10,13 @@
     
     <ItemGroup>
         <ProjectReference Include="../Azone.Gateway/Azone.Gateway.csproj"/>
+        <ProjectReference Include="../Azone.Auth/Azone.Auth.csproj"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <PackageReference Include="Aspire.Hosting.PostgreSQL" Version="13.1.0" />
+      <PackageReference Include="Aspire.Hosting.Redis" Version="13.1.0" />
+      <PackageReference Include="dotenv.net" Version="4.0.0" />
     </ItemGroup>
 
 </Project>

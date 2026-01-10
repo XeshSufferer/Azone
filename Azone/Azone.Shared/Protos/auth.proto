@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+option csharp_namespace = "Azone.Models.Generated";
+
+package auth;
+
+
+service Auth {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountReply);
+  rpc Login(LoginRequest) returns (LoginReply);
+  rpc Logout(LogoutRequest) returns (LogoutReply);
+  rpc Refresh(RefreshToken) returns (TokenPair);
+  rpc TokenValidate(RefreshToken) returns (TokenIsValid);
+}
+
+message CreateAccountRequest {
+  string password = 1;
+  string login = 2;
+  string phoneNumber = 3;
+}
+
+message RefreshToken {
+  string refresh = 1;
+}
+
+message TokenIsValid {
+  bool isValid = 1;
+}
+
+message CreateAccountReply {
+  TokenPair tokens = 1;
+}
+
+message LoginRequest {
+  string password = 1;
+  string login = 2;
+}
+
+message LoginReply {
+  TokenPair tokens = 1;
+}
+
+message LogoutReply {
+  bool isSuccess = 1;
+}
+
+message LogoutRequest {
+  string refreshToken = 1;
+}
+
+
+message TokenPair {
+  string refreshToken = 1;
+  string accessToken = 2;
+}

@@ -1,9 +1,15 @@
+using System.Text;
+using Azone.Shared.Cache;
+using Azone.Shared.DBs;
+using Azone.Shared.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.ServiceDiscovery;
+using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
@@ -41,6 +47,46 @@ public static class Extensions
         //     options.AllowedSchemes = ["https"];
         // });
 
+        
+        
+        builder.AddRedisClient("redis");
+
+        builder.AddNpgsqlDbContext<AppDbContext>("postgres");
+        builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
+        
+        var jwtOpt = new JwtOptions()
+        {
+            Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+            Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER"),
+            Key = Environment.GetEnvironmentVariable("JWT_AUDIENCE"),
+            ExpireMinutes = int.Parse(Environment.GetEnvironmentVariable("JWT_EXPIRE_MINUTES"))
+        };
+        
+        builder.Services.AddSingleton<JwtOptions>(p =>
+        {
+            return jwtOpt;
+        });
+        
+        builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtOpt.Issuer,
+                    ValidAudience = jwtOpt.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(jwtOpt.Key)),
+                };
+            });
+        
         return builder;
     }
 
