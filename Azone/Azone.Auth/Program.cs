@@ -1,4 +1,4 @@
-using Azone.Accounts.Services;
+using Azone.Auth.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

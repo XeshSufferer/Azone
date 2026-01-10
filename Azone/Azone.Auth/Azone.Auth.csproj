@@ -8,9 +8,14 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
         <ProjectReference Include="../Azone.Shared/Azone.Shared.csproj"/>
         <ProjectReference Include="../Azone.ServiceDefaults/Azone.ServiceDefaults.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Helpers\" />
     </ItemGroup>
 
 </Project>
