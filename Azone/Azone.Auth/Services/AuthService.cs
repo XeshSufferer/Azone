@@ -88,14 +88,14 @@ public class AuthService(ILogger<AuthService> logger, AuthDbContext db,
         return new IsSuccess { Success = true };
     }
 
-    public override async Task<IsSuccess> UserExist(UserIdRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> UserExist(UserId request, ServerCallContext context)
     {
-        return new IsSuccess{Success = await db.Users.AnyAsync(u => u.Id == request.UserId)};
+        return new IsSuccess{Success = await db.Users.AnyAsync(u => u.Id == request.Id)};
     }
 
-    public override async Task<UserData> GetUserData(UserIdRequest request, ServerCallContext context)
+    public override async Task<UserData> GetUserData(UserId request, ServerCallContext context)
     {
-        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == request.UserId);
+        var user = await db.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
         
         if(user == null)
             throw new RpcException(new Status(StatusCode.NotFound, AuthError.UserNotFound.Code()));

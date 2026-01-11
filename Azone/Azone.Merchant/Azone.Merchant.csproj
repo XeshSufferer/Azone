@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.64.0"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <ProjectReference Include="../Azone.ServiceDefaults/Azone.ServiceDefaults.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Common/Azone.Infra.Common.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Contracts/Azone.Infra.Contracts.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Security/Azone.Infra.Security.csproj"/>
+        <ProjectReference Include="../Azone.Infra.Shared/Azone.Infra.Shared.csproj"/>
+    </ItemGroup>
+
+</Project>

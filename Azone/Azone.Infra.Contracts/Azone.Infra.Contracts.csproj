@@ -8,7 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Protobuf Include="Protos\auth.proto" Services="Both" Access="Public"/>
+        <Protobuf Include="Protos/**/*.proto"
+                  ProtoRoot="Protos"
+                  Services="Both"
+                  Access="Public" />
     </ItemGroup>
 
     <ItemGroup>

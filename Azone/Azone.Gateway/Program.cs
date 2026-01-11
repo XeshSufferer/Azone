@@ -29,6 +29,8 @@ app.UseHttpsRedirection();
 
 var api = app.MapGroup("api/");
 var auth = api.MapGroup("auth/");
+var merchant = api.MapGroup("merchant/");
+
 
 auth.MapGet("/validate-token", () => new { IsValid = true })
     .RequireAuthorization();

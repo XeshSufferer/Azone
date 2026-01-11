@@ -2,17 +2,20 @@ syntax = "proto3";
 
 option csharp_namespace = "Azone.Contracts.Models.Generated";
 
+import "common/common_types.proto";
+
+
 package auth;
 
 
 service Auth {
   rpc CreateAccount(CreateAccountRequest) returns (CreateAccountReply);
   rpc Login(LoginRequest) returns (LoginReply);
-  rpc Logout(RefreshToken) returns (IsSuccess);
+  rpc Logout(RefreshToken) returns (common.IsSuccess);
   rpc Refresh(RefreshToken) returns (TokenPair);
-  rpc ChangePassword(ChangePasswordRequest) returns (IsSuccess);
-  rpc GetUserData(UserIdRequest) returns (UserData);
-  rpc UserExist(UserIdRequest) returns (IsSuccess);
+  rpc ChangePassword(ChangePasswordRequest) returns (common.IsSuccess);
+  rpc GetUserData(common.UserId) returns (UserData);
+  rpc UserExist(common.UserId) returns (common.IsSuccess);
 }
 
 message CreateAccountRequest {
@@ -29,14 +32,6 @@ message ChangePasswordRequest {
 message UserData {
   int32 id = 1;
   
-}
-
-message UserIdRequest {
-  int32 user_id = 1;
-}
-
-message IsSuccess {
-  bool Success = 1;
 }
 
 message RefreshToken {

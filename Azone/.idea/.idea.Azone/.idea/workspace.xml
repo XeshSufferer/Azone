@@ -7,53 +7,32 @@
     <projectFile aspireProfileName="https">Azone.AppHost/Azone.AppHost.csproj</projectFile>
     <projectFile profileName="http">Azone.Gateway/Azone.Gateway.csproj</projectFile>
     <projectFile profileName="https">Azone.Gateway/Azone.Gateway.csproj</projectFile>
+    <projectFile profileName="http">Azone.Merchant/Azone.Merchant.csproj</projectFile>
+    <projectFile profileName="https">Azone.Merchant/Azone.Merchant.csproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2369cb4f-c733-4a45-b3a1-affcf72bf9cb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Azone.Infra.Common/Models/Error.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Azone.Infra.Contracts.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/ClaimsPrincipalExtension.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/IJwtHelper.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Azone.Infra.Security/Helpers/JwtHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Azone/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Azone/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/common/common_types.proto" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/DBs/MerchantDbContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/DBs/MerchantDbContextFactory.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Enums/MerchantError.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Enums/Permissions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Enums/ShopOwnerRoles.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Records/ShopOwner.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Records/ShopRole.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Models/Shop.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Azone.Merchant/Utils/Extensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.AppHost/AppHost.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.AppHost/AppHost.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.AppHost/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.AppHost/Extensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Azone.Auth.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Azone.Auth.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.AppHost/Azone.AppHost.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.AppHost/Azone.AppHost.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Auth/Db/AuthDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Db/AuthDbContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/AuthService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/AuthService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IJwtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IJwtService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IRefreshService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/Contracts/IRefreshService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/JwtService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/JwtService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/RefreshService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/RefreshService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Auth/Services/Sub-Services/TokenService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Gateway/Azone.Gateway.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Azone.Gateway.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Gateway/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Extensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.Gateway/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Gateway/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.ServiceDefaults/Azone.ServiceDefaults.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.ServiceDefaults/Azone.ServiceDefaults.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.ServiceDefaults/Extensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.ServiceDefaults/Extensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Azone.Shared.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Azone.Shared.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Cache/IRedisCacheService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Shared/Cache/IRedisCacheService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Cache/RedisCacheService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Shared/Cache/RedisCacheService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/DBs/AppDbContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/DBs/AppDbContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/CartItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/CartItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/ProductCategory.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Enums/ProductCategory.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Enums/UserRole.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Enums/UserRole.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Item.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Item.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/JwtOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Security/DataObjects/JwtOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Order.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Order.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/ProductReview.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/ProductReview.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/RefreshTokenPayload.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/RefreshTokenPayload.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Shop.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/Shop.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/ShopReview.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/ShopReview.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/TokenPair.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Shared/Models/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Models/Utils/Result.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Common/Models/Result.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Azone.Shared/Protos/auth.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/auth.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Infra.Contracts/Azone.Infra.Contracts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Azone.Infra.Contracts.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/auth.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/auth.proto" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/merchant.proto" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.Infra.Contracts/Protos/merchant.proto" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Azone.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Azone.sln" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,9 +54,13 @@
     <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/ClaimsPrincipalExtension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/IJwtHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Azone.Infra.Security/Helpers/JwtHelper.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/Enums/OrderStatus.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/Order.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Azone.Shared/Models/OrderItem.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/DBs/MerchantDbContextFactory.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Models/Enums/MerchantError.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Models/Enums/Permissions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Models/Enums/ShopOwnerRoles.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Models/Records/ShopOwner.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Models/Records/ShopRole.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Azone.Merchant/Utils/Extensions.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -226,6 +209,38 @@
         <option name="Build" />
       </method>
     </configuration>
+    <configuration name="Azone.Merchant: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Azone.Merchant/Azone.Merchant.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="http" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <option name="AUTO_ATTACH_CHILDREN" value="0" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="Azone.Merchant: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Azone.Merchant/Azone.Merchant.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net10.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="https" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <option name="AUTO_ATTACH_CHILDREN" value="0" />
+      <option name="MIXED_MODE_DEBUG" value="0" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -239,6 +254,7 @@
       <workItem from="1767953283642" duration="7141000" />
       <workItem from="1768001005914" duration="16918000" />
       <workItem from="1768036876506" duration="1497000" />
+      <workItem from="1768115134671" duration="19081000" />
     </task>
     <servers />
   </component>
