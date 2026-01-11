@@ -1,4 +1,5 @@
 using Azone.Contracts.Models.Generated;
+using Azone.Infra.Common.Models;
 using Azone.Infra.Security.Helpers;
 using Azone.Merchant.DBs;
 using Azone.Merchant.Models;
@@ -29,18 +30,26 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
 
     public override async Task<ShopData> GetShopById(ShopId request, ServerCallContext context)
     {
-        var shop = (await db.Shops.FirstOrDefaultAsync(s => s.Id == request.Id));
+        var shop = await FindShop(request.Id, false);
         ThrowWithNotFoundIfShopIsNull(shop);
         return shop.ToShopData();
     }
 
-    public override async Task<IsSuccess> UserIsAdminOfShop(UserIsAdminOfShopRequest request, ServerCallContext context)
+    public override async Task<ShopPreview> GetPreviewShopById(ShopId request, ServerCallContext context)
     {
-        var shop = await FindShop(request.ShopId.Id);
+        var shop = await FindShop(request.Id);
+        ThrowWithNotFoundIfShopIsNull(shop);
+
+        return shop.ToShopPreview();
+    }
+
+    public override async Task<IsSuccess> UserIsAdminOfShop(OwnersActionData request, ServerCallContext context)
+    {
+        var shop = await FindShop(request.ShopId.Id, false);
         
         ThrowWithNotFoundIfShopIsNull(shop);
         
-        return new IsSuccess { Success = shop.IsOwner(request.UserId.Id) };
+        return shop.IsOwner(request.UserId.Id).ToIsSuccess();
     }
 
     public override Task<PermissionsList> GetPermissionList(Empty request, ServerCallContext context)
@@ -61,11 +70,10 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
 
         var result = shop.EditName(request.NewFieldValue, senderId);
         
-        if(!result.IsSuccess)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
         
         await db.SaveChangesAsync();
-        return new IsSuccess { Success = true };
+        return result.IsSuccess.ToIsSuccess();
     }
 
     public override async Task<IsSuccess> EditShopDescription(EditShopFieldRequest request, ServerCallContext context)
@@ -77,11 +85,10 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
         
         var result = shop.EditDescription(request.NewFieldValue, senderId);
         
-        if(!result.IsSuccess)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
         
         await db.SaveChangesAsync();
-        return new IsSuccess { Success = true };
+        return result.IsSuccess.ToIsSuccess();
     }
 
     public override async Task<IsSuccess> EditShopLogo(EditShopFieldRequest request, ServerCallContext context)
@@ -94,11 +101,10 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
         
         var result = shop.EditLogoUrl(request.NewFieldValue, senderId);
         
-        if(!result.IsSuccess)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
         
         await db.SaveChangesAsync();
-        return new IsSuccess { Success = true };
+        return result.IsSuccess.ToIsSuccess();
     }
 
     public override async Task<IsSuccess> EditOwnerPermissions(EditOwnerPermissionList request, ServerCallContext context)
@@ -111,13 +117,93 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
                 ? shop.AddPermissionToOwner(request.UserId.Id, sender, request.NewPermission)
             : shop.RemovePermissionFromOwner(request.UserId.Id, sender, request.NewPermission);
 
-        if (!result.IsSuccess)
-            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
-
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
         await db.SaveChangesAsync();
-        return new IsSuccess { Success = true };
+        return result.IsSuccess.ToIsSuccess();
     }
 
+    public override async Task<IsSuccess> UserHavePermission(UserHavePermissionRequest request, ServerCallContext context)
+    {
+        var shop = await FindShopWithInclude(request.ShopId.Id, false);
+        ThrowWithNotFoundIfShopIsNull(shop);
+        var senderId = jwtHelper.ValidateToken(context).GetUserId();
+        
+        if(!shop.IsOwner(senderId))
+            throw new RpcException(new Status(StatusCode.PermissionDenied, MerchantError.YouNotAOwner.Code()));
+
+        var result = shop.OwnerHavePermission(request.UserId.Id, request.Permission);
+        return result.ToIsSuccess();
+    }
+
+    public override async Task<IsSuccess> AddOwner(OwnersActionData request, ServerCallContext context)
+    {
+        var shop = await FindShopWithInclude(request.ShopId.Id);
+        ThrowWithNotFoundIfShopIsNull(shop);
+        
+        var senderId = jwtHelper.ValidateToken(context).GetUserId();
+        
+        var result = shop.AddOwner(request.UserId.Id, ShopOwnerRoles.Manager, senderId);
+        
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
+    }
+
+    public override async Task<Owners> GetOwnerList(ShopId request, ServerCallContext context)
+    {
+        var shop = await FindShopWithInclude(request.Id, false);
+
+        var returnedOwners = new Owners();
+        returnedOwners.Owners_.AddRange(shop.Owners.Select(x => new UserId { Id = x.UserId }).AsEnumerable());
+        return returnedOwners;
+    }
+
+    public override async Task<PermissionsList> GetPermissionsOfOwner(OwnersActionData request, ServerCallContext context)
+    {
+        var shop = await FindShopWithInclude(request.ShopId.Id, false);
+
+        ThrowWithNotFoundIfShopIsNull(shop);
+        
+        var permissions = shop.GetOwnerPermissionsList(request.UserId.Id);
+        
+        ThrowWithInvalidArgumentIfResultUnsuccessful(permissions);
+        
+        var returnedPermissions = new PermissionsList();
+        
+        returnedPermissions.Permissions.AddRange(permissions.Value);
+        return returnedPermissions;
+    }
+
+    public override async Task<ShopDataWithOwners> GetShopDataWithOwners(ShopId request, ServerCallContext context)
+    {
+        var shop = await FindShop(request.Id, false);
+        ThrowWithNotFoundIfShopIsNull(shop);
+        return shop.ToShopDataWithOwners();
+    }
+
+    public override async Task<IsSuccess> RemoveOwner(OwnersActionData request, ServerCallContext context)
+    {
+        var shop = await FindShopWithInclude(request.ShopId.Id);
+        ThrowWithNotFoundIfShopIsNull(shop);
+        var senderId = jwtHelper.ValidateToken(context).GetUserId();
+        var result = shop.RemoveOwner(request.UserId.Id, senderId);
+        ThrowWithInvalidArgumentIfResultUnsuccessful(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
+    }
+
+    private void ThrowWithInvalidArgumentIfResultUnsuccessful(Result result)
+    {
+        if(!result.IsSuccess)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+    }
+    
+    private void ThrowWithInvalidArgumentIfResultUnsuccessful<T>(Result<T> result)
+    {
+        if(!result.IsSuccess)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+    }
+    
     private void ThrowWithNotFoundIfShopIsNull(Shop shop)
     {
         if(shop == null)
@@ -133,12 +219,25 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
     }
 
 
-    private async Task<Shop?> FindShopWithInclude(int id) =>
-        await db.Shops
+    private async Task<Shop?> FindShopWithInclude(int id, bool withTracking = true)
+    {
+        var query = db.Shops.Where(s => s.Id == id);
+
+        if (!withTracking)
+            query = query.AsNoTracking();
+        
+        return await query
             .Include(s => s.Owners)
-            .FirstOrDefaultAsync(s => s.Id == id);
+            .FirstOrDefaultAsync();
+    }
     
-    private async Task<Shop?> FindShop(int id) =>
-        await db.Shops
-            .FirstOrDefaultAsync(s => s.Id == id);
+    private async Task<Shop?> FindShop(int id, bool withTracking = true)
+    {
+        var query = db.Shops.Where(s => s.Id == id);
+
+        if (!withTracking)
+            query = query.AsNoTracking();
+        
+        return await query.FirstOrDefaultAsync();
+    }
 }

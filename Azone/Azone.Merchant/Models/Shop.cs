@@ -217,6 +217,16 @@ public class Shop
         return Result.Success();
     }
 
+    public Result<HashSet<Permissions>> GetOwnerPermissionsList(int id)
+    {
+        var owner = FindOwner(id);
+        
+        if(owner == null)
+            return Result<HashSet<Permissions>>.Failure(MerchantError.UserIsNotShopOwner.Code());
+
+        return Result<HashSet<Permissions>>.Success(owner.Permissions);
+    }
+
     private ShopOwner? FindOwner(int userId)
         => _owners.FirstOrDefault(x => x.UserId ==  userId);
 

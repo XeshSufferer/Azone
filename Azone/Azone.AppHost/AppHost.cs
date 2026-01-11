@@ -27,8 +27,8 @@ var gateway = builder.AddProject<Projects.Azone_Gateway>("gateway")
     .WithOtlpExporter()
     .WithDefaultReferences(authDb, cache)
     .WithDefaultSecuritySettings()
-    .AddServiceConnectionString("Auth:connection", auth)
-    .AddServiceConnectionString("Merchant:connection", merchant);
+    .AddServiceConnectionString(auth)
+    .AddServiceConnectionString(merchant);
 
 
 builder.Build().Run();

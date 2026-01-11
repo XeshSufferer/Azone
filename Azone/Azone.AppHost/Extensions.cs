@@ -15,12 +15,11 @@ public static class Extensions
     }
     
     public static IResourceBuilder<ProjectResource> AddServiceConnectionString(
-        this IResourceBuilder<ProjectResource> builder,
-        string key, IResourceBuilder<ProjectResource> service)
+        this IResourceBuilder<ProjectResource> builder, IResourceBuilder<ProjectResource> service)
     {
         return builder
             .WithReference(service)
-            .WithEnvironment(key, $"http://{service.Resource.Name}");
+            .WithEnvironment($"{service.Resource.Name}:connection", $"http://{service.Resource.Name}");
     }
     
     public static IResourceBuilder<ProjectResource> WithDefaultSecuritySettings(

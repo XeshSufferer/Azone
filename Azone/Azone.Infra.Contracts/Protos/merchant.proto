@@ -10,30 +10,53 @@ package merchant;
 service Merchant {
   rpc CreateShop(CreateShopRequest) returns (ShopData);
   rpc GetShopById(common.ShopId) returns (ShopData);
-  rpc UserIsAdminOfShop(UserIsAdminOfShopRequest) returns (common.IsSuccess);
+  rpc GetPreviewShopById(common.ShopId) returns (ShopPreview);
+  rpc UserIsAdminOfShop(OwnersActionData) returns (common.IsSuccess);
   rpc EditShopName(EditShopFieldRequest) returns (common.IsSuccess);
   rpc EditShopDescription(EditShopFieldRequest) returns (common.IsSuccess);
   rpc EditShopLogo(EditShopFieldRequest) returns (common.IsSuccess);
   rpc EditOwnerPermissions(EditOwnerPermissionList) returns (common.IsSuccess);
   rpc GetPermissionList(google.protobuf.Empty) returns (PermissionsList);
+  rpc UserHavePermission(UserHavePermissionRequest) returns (common.IsSuccess);
+  rpc AddOwner(OwnersActionData) returns (common.IsSuccess);
+  rpc RemoveOwner(OwnersActionData) returns (common.IsSuccess);
+  rpc GetOwnerList(common.ShopId) returns (Owners);
+  rpc GetShopDataWithOwners(common.ShopId) returns (ShopDataWithOwners);
+  rpc GetPermissionsOfOwner(OwnersActionData) returns (PermissionsList);
 }
 
-message UserIsAdminOfShopRequest {
+message OwnersActionData {
   common.UserId user_id = 1;
   common.ShopId shop_id = 2;
 }
 
-message EditOwnerPermissionList{
+message Owners {
+  repeated common.UserId owners = 1;
+}
+
+message EditOwnerPermissionList {
   common.ShopId shop_id = 1;
   common.UserId user_id = 2;
   Permissions new_permission = 3;
   bool permission_set = 4;
 }
 
+message UserHavePermissionRequest {
+  common.UserId user_id = 1;
+  common.ShopId shop_id = 2;
+  Permissions permission = 3;
+}
+
 message EditShopFieldRequest {
   common.ShopId shop_id = 1;
   string new_field_value = 2;
 }
+
+message ShopPreview {
+  string name = 1;
+  string logo_url = 2;
+}
+
 
 message PermissionsList {
   repeated Permissions permissions = 1;
@@ -48,6 +71,7 @@ enum Permissions {
   EDIT_ROLES_NAME = 5;
   EDIT_ROLES_PERMISSIONS = 6;
   EDIT_PROTECTED_OWNERS = 7;
+  MANAGE_PRODUCTS = 8;
 }
 
 
@@ -59,4 +83,17 @@ message ShopData {
   int32 id = 1;
   string shop_name = 2;
   string shop_description = 3;
+  string shop_logo_url = 4;
+}
+
+message ShopDataWithOwners {
+  int32 id = 1;
+  string shop_name = 2;
+  string shop_description = 3;
+  string shop_logo_url = 4;
+  Owners owners = 5;
+}
+
+message OwnersData {
+  
 }

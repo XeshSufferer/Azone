@@ -3,7 +3,7 @@ using Azone.Merchant.Models.Enums;
 
 public class ShopOwner
 {
-    public int ShopId { get; private set; }
+    //public int ShopId { get; private set; }
     public int UserId { get; private set; }
 
     public ShopOwnerRoles Role { get; private set; }
@@ -14,7 +14,7 @@ public class ShopOwner
 
     public ShopOwner(int shopId, int userId, ShopOwnerRoles role, HashSet<Permissions> permissions, bool isProtected = false)
     {
-        ShopId = shopId;
+        //ShopId = shopId;
         UserId = userId;
         Role = role;
         Permissions = permissions;

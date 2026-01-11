@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Grpc.Core;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace Azone.Gateway;
 
@@ -14,7 +15,7 @@ public static class Extensions
         bool forwardAuth = true)
         where TClient : class
     {
-        app.MapPost(path, async (TRequest request, HttpContext ctx) =>
+        var endpoint = app.MapPost(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
             var metadata = BuildMetadata(ctx, forwardAuth);
@@ -29,6 +30,10 @@ public static class Extensions
                 return HandleGrpcError(ex);
             }
         });
+        
+        if(forwardAuth)
+            endpoint.RequireAuthorization();
+        
         return app;
     }
 
@@ -39,7 +44,7 @@ public static class Extensions
         bool forwardAuth = true)
         where TClient : class
     {
-        app.MapPost(path, async (TRequest request, HttpContext ctx) =>
+        var endpoint = app.MapPost(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
             var metadata = BuildMetadata(ctx, forwardAuth);
@@ -54,8 +59,12 @@ public static class Extensions
                 return HandleGrpcError(ex);
             }
         });
+        
+        if(forwardAuth)
+            endpoint.RequireAuthorization();
         return app;
     }
+    
     
     public static WebApplication MapGrpcGet<TClient, TRequest, TResponse>(
         this WebApplication app,
@@ -64,7 +73,9 @@ public static class Extensions
         bool forwardAuth = true)
         where TClient : class
     {
-        app.MapGet(path, async (TRequest request, HttpContext ctx) =>
+        
+        
+        var endpoint = app.MapGet(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
             var metadata = BuildMetadata(ctx, forwardAuth);
@@ -79,6 +90,9 @@ public static class Extensions
                 return HandleGrpcError(ex);
             }
         });
+        
+        if(forwardAuth)
+            endpoint.RequireAuthorization();
         return app;
     }
 
@@ -89,7 +103,7 @@ public static class Extensions
         bool forwardAuth = true)
         where TClient : class
     {
-        app.MapGet(path, async (TRequest request, HttpContext ctx) =>
+        var endpoint = app.MapGet(path, async (TRequest request, HttpContext ctx) =>
         {
             var client = ctx.RequestServices.GetRequiredService<TClient>();
             var metadata = BuildMetadata(ctx, forwardAuth);
@@ -104,6 +118,133 @@ public static class Extensions
                 return HandleGrpcError(ex);
             }
         });
+
+        if (forwardAuth)
+            endpoint.RequireAuthorization();
+        return app;
+    }
+    
+    public static RouteGroupBuilder MapGrpcGet<TClient, TParam, TRequest, TResponse>(
+        this RouteGroupBuilder app,
+        string path,
+        Func<TParam, TRequest> requestFactory,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        var endpoint = app.MapGet(path, async (TParam param, HttpContext ctx) =>
+        {
+            var request = requestFactory(param);
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+
+        if (forwardAuth)
+            endpoint.RequireAuthorization();
+
+        return app;
+    }
+
+    public static RouteGroupBuilder MapGrpcGet<TClient, TParam1, TParam2, TRequest, TResponse>(
+        this RouteGroupBuilder app,
+        string path,
+        Func<TParam1, TParam2, TRequest> requestFactory,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        var endpoint = app.MapGet(path, async (TParam1 p1, TParam2 p2, HttpContext ctx) =>
+        {
+            var request = requestFactory(p1, p2);
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+
+        if (forwardAuth)
+            endpoint.RequireAuthorization();
+
+        return app;
+    }
+    
+    public static WebApplication MapGrpcGet<TClient, TParam, TRequest, TResponse>(
+        this WebApplication app,
+        string path,
+        Func<TParam, TRequest> requestFactory,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        var endpoint = app.MapGet(path, async (TParam param, HttpContext ctx) =>
+        {
+            var request = requestFactory(param);
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+
+        if (forwardAuth)
+            endpoint.RequireAuthorization();
+
+        return app;
+    }
+
+    public static WebApplication MapGrpcGet<TClient, TParam1, TParam2, TRequest, TResponse>(
+        this WebApplication app,
+        string path,
+        Func<TParam1, TParam2, TRequest> requestFactory,
+        Func<TClient, TRequest, Metadata, HttpContext, Task<TResponse>> handler,
+        bool forwardAuth = true)
+        where TClient : class
+    {
+        var endpoint = app.MapGet(path, async (TParam1 p1, TParam2 p2, HttpContext ctx) =>
+        {
+            var request = requestFactory(p1, p2);
+            var client = ctx.RequestServices.GetRequiredService<TClient>();
+            var metadata = BuildMetadata(ctx, forwardAuth);
+
+            try
+            {
+                var response = await handler(client, request, metadata, ctx);
+                return Results.Ok(response);
+            }
+            catch (RpcException ex)
+            {
+                return HandleGrpcError(ex);
+            }
+        });
+
+        if (forwardAuth)
+            endpoint.RequireAuthorization();
+
         return app;
     }
 
@@ -135,7 +276,19 @@ public static class Extensions
             _ => 500
         };
 
-        return Results.StatusCode(httpStatus);
+        return Results.Problem(statusCode: httpStatus, detail: ex.Message);
+    }
+    
+    public static IServiceCollection AddGrpcClientByLink<TClient>(
+        this IServiceCollection app,
+        string path)
+    where TClient : class
+    {
+        app.AddGrpcClient<TClient>(o =>
+        {
+            o.Address = new Uri(Environment.GetEnvironmentVariable($"{path}:connection") ?? throw new ArgumentNullException($"{path}:connect", $"Environment variable {path} not found"));
+        });
+        return app;
     }
 
     public static IRuleBuilder<T, string> IsPassword<T>(this IRuleBuilder<T, string> builder)
