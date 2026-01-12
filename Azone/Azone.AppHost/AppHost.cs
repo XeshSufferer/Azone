@@ -12,6 +12,7 @@ var postgres = builder.AddPostgres("postgres");
 
 var authDb = postgres.AddDatabase("auth-db");
 var merchantDb = postgres.AddDatabase("merchant-db");
+var catalogDb = postgres.AddDatabase("catalog-db");
 
 var auth = builder.AddProject<Projects.Azone_Auth>("auth")
     .WithOtlpExporter()
@@ -22,6 +23,12 @@ var merchant = builder.AddProject<Projects.Azone_Merchant>("merchant")
     .WithOtlpExporter()
     .WithDefaultReferences(merchantDb, cache)
     .WithDefaultSecuritySettings();
+
+var catalog = builder.AddProject<Projects.Azone_Catalog>("catalog")
+    .WithOtlpExporter()
+    .WithDefaultReferences(catalogDb, cache)
+    .WithDefaultSecuritySettings()
+    .AddServiceConnectionString(merchant);
 
 var gateway = builder.AddProject<Projects.Azone_Gateway>("gateway")
     .WithOtlpExporter()

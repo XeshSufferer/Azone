@@ -12,6 +12,7 @@
         <ProjectReference Include="../Azone.Gateway/Azone.Gateway.csproj"/>
         <ProjectReference Include="../Azone.Auth/Azone.Auth.csproj"/>
         <ProjectReference Include="../Azone.Merchant/Azone.Merchant.csproj"/>
+        <ProjectReference Include="../Azone.Catalog/Azone.Catalog.csproj"/>
     </ItemGroup>
     
     <ItemGroup>

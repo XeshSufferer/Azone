@@ -1,5 +1,6 @@
 using Azone.Contracts.Models.Generated;
 using Azone.Gateway;
+using Azone.Infra.Shared;
 using Google.Protobuf.WellKnownTypes;
 
 var builder = WebApplication.CreateBuilder(args);

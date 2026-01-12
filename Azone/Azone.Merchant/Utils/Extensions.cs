@@ -41,6 +41,4 @@ public static class Extensions
         };
     }
     
-    public static IsSuccess ToIsSuccess(this bool isSuccess)
-        => new IsSuccess { Success = isSuccess };
 }

@@ -1,0 +1,77 @@
+syntax = "proto3";
+
+option csharp_namespace = "Azone.Contracts.Models.Generated";
+
+import "common/common_types.proto";
+
+package catalog;
+
+service Catalog {
+  rpc GetShopProduct(GetProductFromShopRequest) returns (ProductsList);
+  rpc GetProducts(GetProductRequest) returns (ProductsList);
+  rpc AddProduct(ProductAddRequest) returns (common.IsSuccess);
+  rpc RemoveProduct(ProductId) returns (common.IsSuccess);
+  rpc EditProductDescription(EditProductFieldRequest) returns (common.IsSuccess);
+  rpc EditProductName(EditProductFieldRequest) returns (common.IsSuccess);
+  rpc EditProductImages(EditProductFieldRequest) returns (common.IsSuccess);
+  rpc EditProductPrice(EditProductFieldRequest) returns (common.IsSuccess);
+}
+
+message EditProductFieldRequest {
+  ProductId id = 1;
+  string new_field_value = 2;
+}
+
+message EditPriceFieldRequest {
+  ProductId id = 1;
+  ProtoDecimal new_price = 2;
+}
+
+message ProtoDecimal {
+  int64 value = 1;
+  int32 scale = 2;
+}
+
+message ProductsList {
+  repeated ProductData products = 1;
+}
+
+message ProductAddRequest {
+  string name = 1;
+  string description = 2;
+  ProtoDecimal price = 3;
+  common.ShopId shop_id = 5;
+  repeated string logos = 4;
+}
+
+message GetProductFromShopRequest {
+  common.ShopId shop_id = 1;
+  int32 count = 2;
+  int32 skip = 3;
+}
+
+message GetProductRequest {
+  int32 count = 1;
+  int32 skip = 2;
+}
+
+message ProductId {
+  int32 id = 1;
+  int32 shop_id = 2;
+}
+
+message ProductData {
+  Logos logos = 1;
+  string name = 2;
+  string description = 3;
+  // Something else...
+}
+
+message ProductDataPreview {
+  Logos logos = 1;
+  string name = 2;
+}
+
+message Logos {
+  repeated string logo_urls = 1;
+}

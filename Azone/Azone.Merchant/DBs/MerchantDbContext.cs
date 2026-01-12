@@ -19,7 +19,7 @@ public class MerchantDbContext : DbContext
             builder
                 .HasMany<ShopOwner>()
                 .WithOne()
-                .HasForeignKey("ShopId")
+                .HasForeignKey(x => x.ShopId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder
@@ -30,7 +30,7 @@ public class MerchantDbContext : DbContext
 
         modelBuilder.Entity<ShopOwner>(builder =>
         {
-            builder.HasKey("ShopId", "UserId"); // composite key
+            builder.HasKey(x => new { x.ShopId, x.UserId }); // composite key
         });
     }
 }

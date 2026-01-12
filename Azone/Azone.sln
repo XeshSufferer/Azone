@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Infra.Contracts", "Az
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Merchant", "Azone.Merchant\Azone.Merchant.csproj", "{B3328122-3012-4A55-AE87-D622F7CE06E8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Azone.Catalog", "Azone.Catalog\Azone.Catalog.csproj", "{67DF21E9-08CC-43CE-8BBD-308B9A3C809C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{B3328122-3012-4A55-AE87-D622F7CE06E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3328122-3012-4A55-AE87-D622F7CE06E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3328122-3012-4A55-AE87-D622F7CE06E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67DF21E9-08CC-43CE-8BBD-308B9A3C809C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67DF21E9-08CC-43CE-8BBD-308B9A3C809C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67DF21E9-08CC-43CE-8BBD-308B9A3C809C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67DF21E9-08CC-43CE-8BBD-308B9A3C809C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

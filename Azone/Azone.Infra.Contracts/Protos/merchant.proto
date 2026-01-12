@@ -23,12 +23,18 @@ service Merchant {
   rpc GetOwnerList(common.ShopId) returns (Owners);
   rpc GetShopDataWithOwners(common.ShopId) returns (ShopDataWithOwners);
   rpc GetPermissionsOfOwner(OwnersActionData) returns (PermissionsList);
+  rpc OwnerCanEditProductList(OwnersActionData) returns (common.IsSuccess);
+  rpc OwnerCanEditProductImages(OwnersActionData) returns (common.IsSuccess);
+  rpc OwnerCanEditProductName(OwnersActionData) returns (common.IsSuccess);
+  rpc OwnerCanEditProductPrice(OwnersActionData) returns (common.IsSuccess);
+  rpc OwnerCanEditProductDescription(OwnersActionData) returns (common.IsSuccess);
 }
 
 message OwnersActionData {
   common.UserId user_id = 1;
   common.ShopId shop_id = 2;
 }
+
 
 message Owners {
   repeated common.UserId owners = 1;
@@ -71,7 +77,11 @@ enum Permissions {
   EDIT_ROLES_NAME = 5;
   EDIT_ROLES_PERMISSIONS = 6;
   EDIT_PROTECTED_OWNERS = 7;
-  MANAGE_PRODUCTS = 8;
+  EDIT_PRODUCT_LIST = 8;
+  EDIT_PRODUCT_NAME = 9;
+  EDIT_PRODUCT_DESCRIPTIONS = 10;
+  EDIT_PRODUCT_IMAGES = 11;
+  EDIT_PRODUCT_PRICE = 12;
 }
 
 

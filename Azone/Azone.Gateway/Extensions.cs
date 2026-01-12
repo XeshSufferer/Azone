@@ -278,18 +278,6 @@ public static class Extensions
 
         return Results.Problem(statusCode: httpStatus, detail: ex.Message);
     }
-    
-    public static IServiceCollection AddGrpcClientByLink<TClient>(
-        this IServiceCollection app,
-        string path)
-    where TClient : class
-    {
-        app.AddGrpcClient<TClient>(o =>
-        {
-            o.Address = new Uri(Environment.GetEnvironmentVariable($"{path}:connection") ?? throw new ArgumentNullException($"{path}:connect", $"Environment variable {path} not found"));
-        });
-        return app;
-    }
 
     public static IRuleBuilder<T, string> IsPassword<T>(this IRuleBuilder<T, string> builder)
     {

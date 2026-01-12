@@ -1,6 +1,7 @@
 using Azone.Contracts.Models.Generated;
 using Azone.Infra.Common.Models;
 using Azone.Infra.Security.Helpers;
+using Azone.Infra.Shared;
 using Azone.Merchant.DBs;
 using Azone.Merchant.Models;
 using Azone.Merchant.Models.Enums;
@@ -190,6 +191,29 @@ public class MerchantService(ILogger<MerchantService> logger, MerchantDbContext 
         ThrowWithInvalidArgumentIfResultUnsuccessful(result);
         await db.SaveChangesAsync();
         return result.IsSuccess.ToIsSuccess();
+    }
+
+    public override async Task<IsSuccess> OwnerCanEditProductDescription(OwnersActionData request,
+        ServerCallContext context)
+        => await OwnerCan__Internal(request, Permissions.EditProductDescriptions);
+
+    public override async Task<IsSuccess> OwnerCanEditProductImages(OwnersActionData request, ServerCallContext context)
+        => await OwnerCan__Internal(request, Permissions.EditProductImages);
+
+    public override async Task<IsSuccess> OwnerCanEditProductList(OwnersActionData request, ServerCallContext context)
+        => await OwnerCan__Internal(request, Permissions.EditProductList);
+
+    public override async Task<IsSuccess> OwnerCanEditProductName(OwnersActionData request, ServerCallContext context)
+        => await OwnerCan__Internal(request, Permissions.EditProductName);
+
+    public override async Task<IsSuccess> OwnerCanEditProductPrice(OwnersActionData request, ServerCallContext context)
+        => await OwnerCan__Internal(request, Permissions.EditProductPrice);
+
+    private async Task<IsSuccess> OwnerCan__Internal(OwnersActionData request, Permissions permissions)
+    {
+        var shop = await FindShopWithInclude(request.ShopId.Id, false);
+        ThrowWithNotFoundIfShopIsNull(shop);
+        return shop.OwnerHavePermission(request.UserId.Id, permissions).ToIsSuccess();
     }
 
     private void ThrowWithInvalidArgumentIfResultUnsuccessful(Result result)
