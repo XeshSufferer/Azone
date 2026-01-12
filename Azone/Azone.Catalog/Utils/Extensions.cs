@@ -9,7 +9,7 @@ public static class Extensions
     public static string Code(this CatalogError error)
         => $"Catalog.{error.ToString()}";
 
-    public static decimal FromProtoDecimal(this ProtoDecimal protoDecimal)
+    public static decimal ToDecimal(this ProtoDecimal protoDecimal)
     {
         if (protoDecimal.Scale < 0 || protoDecimal.Scale > 28)
             throw new ArgumentOutOfRangeException(nameof(protoDecimal.Scale), "Scale must be between 0 and 28 for C# decimal.");
@@ -57,7 +57,7 @@ public static class Extensions
         };
     }
 
-    public static ProductData ToProductData(this Product product)
+    public static ProductData ToOwnerActionData(this Product product)
     {
         var data = new ProductData
         {
@@ -67,5 +67,23 @@ public static class Extensions
         
         data.Logos.LogoUrls.AddRange(product.ImageUrls.Select(x => x.Url));
         return data;
+    }
+
+    public static OwnersActionData ToOwnerActionData(this EditProductFieldRequest request)
+    {
+        return new OwnersActionData
+        {
+            ShopId = request.Id.ShopId,
+            UserId = request.UserId,
+        };
+    }
+    
+    public static OwnersActionData ToOwnerActionData(this EditPriceFieldRequest request)
+    {
+        return new OwnersActionData
+        {
+            ShopId = request.Id.ShopId,
+            UserId = request.UserId,
+        };
     }
 }

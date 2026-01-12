@@ -1,7 +1,9 @@
 using Azone.Catalog.DB;
 using Azone.Catalog.Models;
+using Azone.Catalog.Models.Enums;
 using Azone.Catalog.Utils;
 using Azone.Contracts.Models.Generated;
+using Azone.Infra.Common.Models;
 using Azone.Infra.Shared;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +17,7 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
         var product = Product.Create(
             request.Logos.AsEnumerable(),
             request.ShopId.Id,
-            request.Price.FromProtoDecimal(),
+            request.Price.ToDecimal(),
             request.Name,
             request.Description);
         
@@ -34,7 +36,7 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
             .AsNoTracking()
             .ToListAsync();
         
-        productsList.Products.AddRange(products.Select(x => x.ToProductData()));
+        productsList.Products.AddRange(products.Select(x => x.ToOwnerActionData()));
         return productsList;
     }
 
@@ -49,7 +51,7 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
             .AsNoTracking()
             .ToListAsync();
         
-        productsList.Products.AddRange(products.Select(x => x.ToProductData()));
+        productsList.Products.AddRange(products.Select(x => x.ToOwnerActionData()));
         return productsList;
     }
 
@@ -65,23 +67,89 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
         return true.ToIsSuccess();
     }
 
-    public override Task<IsSuccess> EditProductImages(EditProductFieldRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> EditProductImages(EditProductFieldRequest request, ServerCallContext context)
     {
-        return base.EditProductImages(request, context);
+        var permissions = await merchantClient.OwnerCanEditProductImagesAsync(request.ToOwnerActionData());
+        CheckPermission(permissions);
+        
+        var product = await FindProductWithInclude(request.Id.Id);
+
+        var result = product.AddImage(new LogoUrl(request.NewFieldValue, product.ShopId));
+        ThrowWithInvalidArgumentIfResultUnsuccess(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
     }
 
-    public override Task<IsSuccess> EditProductDescription(EditProductFieldRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> EditProductDescription(EditProductFieldRequest request, ServerCallContext context)
     {
-        return base.EditProductDescription(request, context);
+        var permissions = await merchantClient.OwnerCanEditProductDescriptionAsync(request.ToOwnerActionData());
+        
+        CheckPermission(permissions);
+        
+        var product = await FindProduct(request.Id.Id);
+        var result = product.EditDescription(request.NewFieldValue);
+        ThrowWithInvalidArgumentIfResultUnsuccess(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
     }
 
-    public override Task<IsSuccess> EditProductName(EditProductFieldRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> EditProductName(EditProductFieldRequest request, ServerCallContext context)
     {
-        return base.EditProductName(request, context);
+        var permissions = await merchantClient.OwnerCanEditProductNameAsync(request.ToOwnerActionData());
+        CheckPermission(permissions);
+        
+        var product = await FindProduct(request.Id.Id);
+        
+        var result = product.EditName(request.NewFieldValue);
+        ThrowWithInvalidArgumentIfResultUnsuccess(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
     }
 
-    public override Task<IsSuccess> EditProductPrice(EditProductFieldRequest request, ServerCallContext context)
+    public override async Task<IsSuccess> EditProductPrice(EditPriceFieldRequest request, ServerCallContext context)
     {
-        return base.EditProductPrice(request, context);
+        var permissions = await merchantClient.OwnerCanEditProductPriceAsync(request.ToOwnerActionData());
+        CheckPermission(permissions);
+        
+        var product = await FindProduct(request.Id.Id);
+        var result = product.EditPrice(request.NewPrice.ToDecimal());
+        ThrowWithInvalidArgumentIfResultUnsuccess(result);
+        await db.SaveChangesAsync();
+        return result.IsSuccess.ToIsSuccess();
+    }
+
+    private async Task<Product?> FindProductWithInclude(int id, bool withTracking = true)
+    {
+        var query = db.Products
+            .Include(p => p.ImageUrls)
+            .Where(p => p.Id == id);
+        
+        if (!withTracking)
+            query = query.AsTracking();
+        
+        return await query.FirstOrDefaultAsync();
+    }   
+
+    private async Task<Product?> FindProduct(int id, bool withTracking = true)
+    {
+        var query = db.Products
+            .Where(p => p.Id == id);
+        
+        if (!withTracking)
+            query = query.AsTracking();
+        
+        return await query.FirstOrDefaultAsync();
+    }
+
+    private void ThrowWithInvalidArgumentIfResultUnsuccess(Result result)
+    {
+        if(!result.IsSuccess)
+            throw new RpcException(new Status(StatusCode.InvalidArgument, result.Error));
+    }
+    
+    private void CheckPermission(IsSuccess result)
+    {
+        if(!result.Success)
+            throw new RpcException(new Status(StatusCode.PermissionDenied, CatalogError.YouDontHavePermissionForThisAction.Code()));
     }
 }

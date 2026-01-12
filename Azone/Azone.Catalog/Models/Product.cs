@@ -1,3 +1,7 @@
+using Azone.Catalog.Models.Enums;
+using Azone.Catalog.Utils;
+using Azone.Infra.Common.Models;
+
 namespace Azone.Catalog.Models;
 
 public class Product
@@ -40,6 +44,60 @@ public class Product
             _imageUrls = urls.Select(url => new LogoUrl(url, shopId)).ToHashSet(),
             CreatedAt = DateTime.UtcNow
         };
+    }
+
+    public Result EditName(string newName)
+    {
+        if (!string.IsNullOrWhiteSpace(newName))
+            return Result.Failure(CatalogError.ThisFieldCannotBeEmpty.Code());
+        
+        _name = Name;
+        return Result.Success();
+    }
+
+    public Result EditDescription(string newDescription)
+    {
+        if (!string.IsNullOrWhiteSpace(newDescription))
+            return Result.Failure(CatalogError.ThisFieldCannotBeEmpty.Code());
+        
+        _description = newDescription;
+        return Result.Success();
+    }
+
+    public Result RemoveImage(LogoUrl imageUrl)
+    {
+        if (!_imageUrls.Contains(imageUrl))
+            return Result.Failure(CatalogError.ThisFieldDoesNotExist.Code());
+        
+        if(Uri.IsWellFormedUriString(imageUrl.Url, UriKind.Absolute))
+            return Result.Failure(CatalogError.InvalidImageUrl.Code());
+        
+        _imageUrls.Remove(imageUrl);
+        return Result.Success();
+    }
+
+    public Result AddImage(LogoUrl imageUrl)
+    {
+        if (_imageUrls.Contains(imageUrl))
+            return Result.Failure(CatalogError.ThisFieldDoesExist.Code());
+        
+        if(Uri.IsWellFormedUriString(imageUrl.Url, UriKind.Absolute))
+            return Result.Failure(CatalogError.InvalidImageUrl.Code());
+        
+        _imageUrls.Add(imageUrl);
+        return Result.Success();
+    }
+
+    public Result EditPrice(decimal newPrice)
+    {
+        if (newPrice < 0)
+            return Result.Failure(CatalogError.PriceCannotBeNegative.Code());
+        
+        if(newPrice == 0)
+            return Result.Failure(CatalogError.PriceCannotBeZero.Code());
+        
+        Price = newPrice;
+        return Result.Success();
     }
     
 }

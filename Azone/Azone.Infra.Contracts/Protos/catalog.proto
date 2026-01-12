@@ -14,17 +14,19 @@ service Catalog {
   rpc EditProductDescription(EditProductFieldRequest) returns (common.IsSuccess);
   rpc EditProductName(EditProductFieldRequest) returns (common.IsSuccess);
   rpc EditProductImages(EditProductFieldRequest) returns (common.IsSuccess);
-  rpc EditProductPrice(EditProductFieldRequest) returns (common.IsSuccess);
+  rpc EditProductPrice(EditPriceFieldRequest) returns (common.IsSuccess);
 }
 
 message EditProductFieldRequest {
   ProductId id = 1;
-  string new_field_value = 2;
+  common.UserId user_id = 2;
+  string new_field_value = 3;
 }
 
 message EditPriceFieldRequest {
   ProductId id = 1;
-  ProtoDecimal new_price = 2;
+  common.UserId user_id = 2;
+  ProtoDecimal new_price = 3;
 }
 
 message ProtoDecimal {
@@ -57,7 +59,7 @@ message GetProductRequest {
 
 message ProductId {
   int32 id = 1;
-  int32 shop_id = 2;
+  common.ShopId shop_id = 2;
 }
 
 message ProductData {
