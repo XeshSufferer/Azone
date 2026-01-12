@@ -13,25 +13,19 @@ public class CatalogDbContext : DbContext
     {
         modelBuilder.Entity<Product>(builder =>
         {
-            builder.HasKey(s => s.Id);
+            builder.HasKey(p => p.Id);
 
-            builder
-                .HasMany<LogoUrl>()
-                .WithOne()
-                .HasForeignKey(x => x.ShopId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.OwnsMany(
+                p => p.ImageUrls,
+                ownedBuilder =>
+                {
+                    ownedBuilder.Property(l => l.Url).IsRequired().HasMaxLength(2048);
+                    ownedBuilder.Property(l => l.ShopId).IsRequired();
 
-            builder
-                .Navigation(s => s.ImageUrls)
-                .UsePropertyAccessMode(PropertyAccessMode.Field);
-            
-            builder.HasIndex(s => s.CreatedAt)
-                .IsDescending()
-                .HasDatabaseName("IX_Products_CreatedAt_DESC");
-            
-            builder.HasIndex(s => new { s.ShopId, s.CreatedAt })
-                .IsDescending();
-                
+                });
+
+            builder.HasIndex(p => p.CreatedAt).IsDescending();
+            builder.HasIndex(p => new { p.ShopId, p.CreatedAt }).IsDescending();
         });
     }
 }

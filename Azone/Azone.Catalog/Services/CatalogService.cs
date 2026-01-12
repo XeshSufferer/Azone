@@ -4,13 +4,15 @@ using Azone.Catalog.Models.Enums;
 using Azone.Catalog.Utils;
 using Azone.Contracts.Models.Generated;
 using Azone.Infra.Common.Models;
+using Azone.Infra.Security.Helpers;
 using Azone.Infra.Shared;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace Azone.Catalog.Services;
 
-public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchantClient) : Contracts.Models.Generated.Catalog.CatalogBase
+public class CatalogService(CatalogDbContext db,
+    Merchant.MerchantClient merchantClient, IJwtHelper jwtHelper) : Contracts.Models.Generated.Catalog.CatalogBase
 {
     public override async Task<IsSuccess> AddProduct(ProductAddRequest request, ServerCallContext context)
     {
@@ -69,7 +71,8 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
 
     public override async Task<IsSuccess> EditProductImages(EditProductFieldRequest request, ServerCallContext context)
     {
-        var permissions = await merchantClient.OwnerCanEditProductImagesAsync(request.ToOwnerActionData());
+        var userid = jwtHelper.ValidateToken(context).GetUserId();
+        var permissions = await merchantClient.OwnerCanEditProductImagesAsync(request.ToOwnerActionData(userid));
         CheckPermission(permissions);
         
         var product = await FindProductWithInclude(request.Id.Id);
@@ -82,7 +85,8 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
 
     public override async Task<IsSuccess> EditProductDescription(EditProductFieldRequest request, ServerCallContext context)
     {
-        var permissions = await merchantClient.OwnerCanEditProductDescriptionAsync(request.ToOwnerActionData());
+        var userid = jwtHelper.ValidateToken(context).GetUserId();
+        var permissions = await merchantClient.OwnerCanEditProductDescriptionAsync(request.ToOwnerActionData(userid));
         
         CheckPermission(permissions);
         
@@ -95,7 +99,8 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
 
     public override async Task<IsSuccess> EditProductName(EditProductFieldRequest request, ServerCallContext context)
     {
-        var permissions = await merchantClient.OwnerCanEditProductNameAsync(request.ToOwnerActionData());
+        var userid = jwtHelper.ValidateToken(context).GetUserId();
+        var permissions = await merchantClient.OwnerCanEditProductNameAsync(request.ToOwnerActionData(userid));
         CheckPermission(permissions);
         
         var product = await FindProduct(request.Id.Id);
@@ -108,7 +113,8 @@ public class CatalogService(CatalogDbContext db, Merchant.MerchantClient merchan
 
     public override async Task<IsSuccess> EditProductPrice(EditPriceFieldRequest request, ServerCallContext context)
     {
-        var permissions = await merchantClient.OwnerCanEditProductPriceAsync(request.ToOwnerActionData());
+        var userid =  jwtHelper.ValidateToken(context).GetUserId();
+        var permissions = await merchantClient.OwnerCanEditProductPriceAsync(request.ToOwnerActionData(userid));
         CheckPermission(permissions);
         
         var product = await FindProduct(request.Id.Id);

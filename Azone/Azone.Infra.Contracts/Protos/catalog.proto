@@ -19,13 +19,11 @@ service Catalog {
 
 message EditProductFieldRequest {
   ProductId id = 1;
-  common.UserId user_id = 2;
   string new_field_value = 3;
 }
 
 message EditPriceFieldRequest {
   ProductId id = 1;
-  common.UserId user_id = 2;
   ProtoDecimal new_price = 3;
 }
 

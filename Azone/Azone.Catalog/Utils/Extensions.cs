@@ -69,21 +69,27 @@ public static class Extensions
         return data;
     }
 
-    public static OwnersActionData ToOwnerActionData(this EditProductFieldRequest request)
+    public static OwnersActionData ToOwnerActionData(this EditProductFieldRequest request, int userId)
     {
         return new OwnersActionData
         {
             ShopId = request.Id.ShopId,
-            UserId = request.UserId,
+            UserId = new UserId
+            {
+                Id = userId
+            },
         };
     }
     
-    public static OwnersActionData ToOwnerActionData(this EditPriceFieldRequest request)
+    public static OwnersActionData ToOwnerActionData(this EditPriceFieldRequest request, int userId)
     {
         return new OwnersActionData
         {
             ShopId = request.Id.ShopId,
-            UserId = request.UserId,
+            UserId = new UserId
+            {
+                Id = userId
+            },
         };
     }
 }

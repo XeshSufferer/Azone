@@ -8,4 +8,6 @@ public class LogoUrl
     {
         Url = url;
     }
+    
+    public LogoUrl() { }
 }
